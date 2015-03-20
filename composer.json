@@ -1,0 +1,29 @@
+{
+    "name": "ufocoder/yii2-syncsocial",
+    "description": "Yii2 extension of synchronization model with social networks",
+    "keywords": ["yii2", "extension", "social", "network", "sync", "synchronize"],
+    "license": "MIT",
+    "version": "1.0.0",
+    "type": "yii2-extension",
+    "authors": [
+        {
+            "name": "Sergey Ivanov",
+            "email": "xifrin@gmail.com"
+        }
+    ],
+    "require": {
+        "php": ">=5.4.0",
+        "yiisoft/yii2-authclient": "^2.0.3"
+    },
+    "require-dev": {
+        "codeception/codeception": "2.0.11",
+        "satooshi/php-coveralls": "0.6.*",
+        "mockery/mockery": "0.9.3",
+        "yiisoft/yii2-codeception": "2.0.3"
+    },
+    "autoload": {
+        "psr-4": {
+            "ufocoder\\SyncSocial\\": "src/"
+        }
+    }
+}

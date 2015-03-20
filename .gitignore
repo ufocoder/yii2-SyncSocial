@@ -1,0 +1,39 @@
+.*.pydevproject
+.project
+.metadata
+*.tmp
+*.bak
+*.swp
+*~.nib
+local.properties
+.classpath
+.settings/
+.loadpath
+.idea
+
+# CDT-specific
+.cproject
+
+# PDT-specific
+.buildpath
+
+# Windows image file caches
+Thumbs.db
+ehthumbs.db
+
+# Folder config file
+Desktop.ini
+
+# Recycle Bin used on file shares
+$RECYCLE.BIN/
+
+# Mac crap
+.DS_Store
+
+codecept.phar
+composer.phar
+tests/_data/*_snapshot
+tests/_output/*
+tests/functional/FunctionalTester.php
+tests/unit/UnitTester.php
+vendor/

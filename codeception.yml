@@ -1,0 +1,20 @@
+actor: Tester
+paths:
+    tests: tests
+    log: tests/_output
+    data: tests/_data
+    helpers: tests/_support
+settings:
+    bootstrap: _bootstrap.php
+    colors: true
+    memory_limit: 1024M
+coverage:
+    enabled: true
+    include:
+        - src/*
+    exclude:
+        - src/messages/*
+        - src/migrations/*
+        - src/views/*
+config:
+    test_entry_url: http://localhost:8080/index-test.php

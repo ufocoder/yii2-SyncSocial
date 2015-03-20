@@ -1,0 +1,23 @@
+language: php
+
+php:
+  - 5.4
+
+before_script:
+  - mysql -e 'create database tests;'
+  - mysqladmin -u root password root
+
+script:
+# composer:
+  - wget http://getcomposer.org/composer.phar
+  - export PATH="$HOME/.composer/vendor/bin:$PATH"
+  - composer self-update && composer --version
+  - composer global require "fxp/composer-asset-plugin"
+  - composer install --dev
+# codecept:
+  - wget http://codeception.com/codecept.phar
+  - php ./codecept.phar build
+  - php ./codecept.phar run --coverage --coverage-xml --coverage-html
+
+after_script:
+  - php vendor/bin/coveralls -v
