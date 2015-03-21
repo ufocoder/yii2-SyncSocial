@@ -1,11 +1,12 @@
 <?php
 
 /* @var $this \yii\web\View */
-/* @var Yii::$app->synchonizer ufocoder\SyncSocial\components\Synchronizer */
+/* @var Yii::$app->synchonizer \ufocoder\SyncSocial\components\Synchronizer */
 
 $this->title = Yii::t( 'SyncSocial', 'Synchronization with social networks' );
 
-$services = Yii::$app->synchronizer->getServiceList();
+$synchronizer = Yii::$app->synchonizer;
+$services = $synchronizer->getServiceList();
 
 ?>
 <?php if ( ! empty( $services ) ): ?>
