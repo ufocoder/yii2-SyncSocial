@@ -1,7 +1,7 @@
 <?php
 
 /* @var $this \yii\web\View */
-/* @var Yii::$app->synchonizer \ufocoder\SyncSocial\components\Synchronizer */
+/* @var $synchonizer \ufocoder\SyncSocial\components\Synchronizer */
 
 $this->title = Yii::t( 'SyncSocial', 'Synchronization with social networks' );
 
@@ -24,19 +24,19 @@ $services = $synchronizer->getServiceList();
                     <?= $service; ?>
                 </td>
                 <td>
-                    <?php if ( ! Yii::$app->synchronizer->isConnected( $service ) ): ?>
+                    <?php if ( ! $synchronizer->isConnected( $service ) ): ?>
                         <a class="btn btn-success btn-sm"
-                           href="<?= Yii::$app->synchronizer->getAuthorizationUri( $service ); ?>">
+                           href="<?= $synchronizer->getAuthorizationUri( $service ); ?>">
                             <i class="glyphicon glyphicon-plus"></i> <?php echo Yii::t( 'SyncSocial', 'Connect' ); ?>
                         </a>
                     <?php else: ?>
                         <a class="btn btn-danger btn-sm"
-                           href="<?= Yii::$app->synchronizer->getDisconnectUrl( $service ); ?>">
+                           href="<?= $synchronizer->getDisconnectUrl( $service ); ?>">
                             <i class="glyphicon glyphicon-remove"></i> <?php echo Yii::t( 'SyncSocial', 'Disconnect' ); ?>
                         </a>
 
                         <a class="btn btn-success btn-sm"
-                           href="<?= Yii::$app->synchronizer->getSyncUrl( $service ); ?>">
+                           href="<?= $synchronizer->getSyncUrl( $service ); ?>">
                             <i class="glyphicon glyphicon-refresh"></i> <?php echo Yii::t( 'SyncSocial', 'Run synchronization' ); ?>
                         </a>
                     <?php endif; ?>
