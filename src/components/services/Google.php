@@ -26,7 +26,7 @@ class Google extends SyncService {
     /**
      * @var bool
      */
-    static $readOnly = true;
+    protected static $readOnly = true;
 
     /**
      * @param $message
