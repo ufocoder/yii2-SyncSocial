@@ -1,5 +1,5 @@
-yii2-SyncSocial [beta]
-=======================
+yii2-SyncSocial
+===============
 
 [![Latest Stable Version](https://poser.pugx.org/ufocoder/yii2-SyncSocial/v/stable.png)](https://packagist.org/packages/ufocoder/yii2-SyncSocial)
 [![Travis Status](https://travis-ci.org/ufocoder/yii2-SyncSocial.svg?branch=master)](https://travis-ci.org/ufocoder/yii2-SyncSocial)
