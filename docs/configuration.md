@@ -119,7 +119,7 @@ Add the following in your model:
      */
     public function getSyncModel()
     {
-        return $this->hasOne('\ufocoder\SyncSocial\models\SyncModel', ['model_id' => 'id']);
+        return $this->hasMany('\ufocoder\SyncSocial\models\SyncModel', ['model_id' => 'id']);
     }
 
     //..
