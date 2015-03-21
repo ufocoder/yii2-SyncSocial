@@ -42,14 +42,14 @@ class SynchronizerTest extends TestCase {
 
         $this->setExpectedException( 'yii\base\Exception', Yii::t( 'SyncSocial', 'Component service must be instance of SyncService class' ) );
         $synchronizer = new TestSynchronizer( [
-            'modelClass'    => '\tests\models\Record',
-            'settings'      => [
+            'modelClass' => '\tests\models\Record',
+            'settings'   => [
                 'provider' => [ ]
             ]
         ] );
 
-        $synchronizer->someMethodThatUpdateService('service', 'fake');
-        $synchronizer->getService('service');
+        $synchronizer->someMethodThatUpdateService( 'service', 'fake' );
+        $synchronizer->getService( 'service' );
 
         $this->assertTrue( true );
 
@@ -284,27 +284,24 @@ class SynchronizerTest extends TestCase {
                             ];
                         } );
 
-
         $mockSyncService->shouldReceive( 'deletePost' )
-                        ->andReturnUsing( function ( $id) {
+                        ->andReturnUsing( function ( $id ) {
                             return true;
                         } );
 
-
         $synchronizer->setService( $serviceName, $mockSyncService );
 
-        $model  = new Record();
+        $model          = new Record();
         $model->content = 'test content';
         $model->save();
 
-        $result = $synchronizer->syncActiveRecord($serviceName, $model );
+        $result = $synchronizer->syncActiveRecord( $serviceName, $model );
 
         $this->assertTrue( $result );
 
-        $flag = $synchronizer->deleteSyncModel($serviceName, $model);
+        $flag = $synchronizer->deleteSyncModel( $serviceName, $model );
 
         $this->assertTrue( $flag );
-
-
     }
+
 }

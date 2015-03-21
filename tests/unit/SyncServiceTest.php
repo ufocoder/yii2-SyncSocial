@@ -16,6 +16,7 @@ class SyncServiceTest extends TestCase {
 
     public $appConfig = '@tests/unit/_config.php';
 
+
     public function testNotExistsServiceClass() {
 
         $serviceClass = 'NotExistsServiceClass';
@@ -125,10 +126,6 @@ class SyncServiceTest extends TestCase {
         ] );
 
         $this->assertTrue( $sync->connect() );
-
-        $token = $sync->service->getAccessToken();
-
-        //
 
         $this->assertTrue( $sync->isConnected() );
         $sync->disconnect();
