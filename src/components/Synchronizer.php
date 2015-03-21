@@ -279,6 +279,15 @@ class Synchronizer extends Component {
     }
 
     /**
+     * @param array $conditions
+     *
+     * @return array|null|ActiveRecord
+     */
+    protected function finSyncModel( $conditions = [ ] ) {
+        return SyncModel::find()->where( $conditions )->one();
+    }
+
+    /**
      * @param SyncService $service
      * @param ActiveRecord $syncActiveRecord
      *
@@ -286,10 +295,10 @@ class Synchronizer extends Component {
      */
     protected function getSyncModel( SyncService $service, ActiveRecord $syncActiveRecord ) {
 
-        return SyncModel::find()->where( [
+        return $this->finSyncModel( [
             'service_name'    => $service->getName(),
             'service_id_post' => $syncActiveRecord->getPrimaryKey()
-        ] )->one();
+        ] );
     }
 
     /**
@@ -300,10 +309,10 @@ class Synchronizer extends Component {
      */
     protected function getSyncActiveRecord( SyncService $service, ActiveRecord $model ) {
 
-        return SyncModel::find()->where( [
+        return $this->finSyncModel( [
             'model_id'     => $model->getPrimaryKey(),
             'service_name' => $service->getName()
-        ] )->one();
+        ] );
     }
 
     /**
@@ -314,7 +323,7 @@ class Synchronizer extends Component {
      * @return bool
      * @throws Exception
      */
-    protected function createSyncModel( SyncService $service, ActiveRecord $model, array $data ) {
+    protected function createSyncModel( SyncService $service, ActiveRecord $model, array $data = null ) {
 
         if ( empty( $data['service_id_post'] ) || empty( $data['service_id_author'] ) ) {
             return false;
