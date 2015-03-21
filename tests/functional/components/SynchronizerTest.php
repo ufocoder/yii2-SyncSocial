@@ -12,7 +12,6 @@ use tests\components\TestSynchronizer;
 
 /**
  * Class SynchronizerTest
- *
  * @package tests\functional\components
  */
 class SynchronizerTest extends TestCase {
@@ -21,7 +20,7 @@ class SynchronizerTest extends TestCase {
 
 
     public function testEmptyClassModelInit() {
-        $this->setExpectedException( 'yii\base\Exception', 'Set model class to synchronization' );
+        $this->setExpectedException( 'yii\base\Exception', Yii::t( 'SyncSocial', 'Set model class to synchronization' ) );
         new Synchronizer();
         $this->assertTrue( true );
     }
@@ -29,7 +28,7 @@ class SynchronizerTest extends TestCase {
 
     public function testNonExistsAttributeInit() {
 
-        $this->setExpectedException( 'yii\base\Exception', 'Set model attribute to synchronization' );
+        $this->setExpectedException( 'yii\base\Exception', Yii::t( 'SyncSocial', 'Set model attribute to synchronization' ) );
         new Synchronizer( [
             'modelClass'     => '\tests\models\Record',
             'modelAttribute' => 'non_exists_attribute'
@@ -277,6 +276,7 @@ class SynchronizerTest extends TestCase {
         $mockSyncService->shouldReceive( 'publishPost' )
                         ->andReturnUsing( function ( $message, $url = null ) {
                             return [
+                                'someextraparam'    => 'test',
                                 'service_id_author' => '2000',
                                 'service_id_post'   => '1000',
                                 'service_language'  => 'ru',
@@ -303,5 +303,138 @@ class SynchronizerTest extends TestCase {
 
         $this->assertTrue( $flag );
     }
+
+
+    public function testSyncActiveRecordWithUrl() {
+
+        $model          = new Record();
+        $model->content = 'test';
+        $model->save();
+
+        $serviceName  = 'fakeService';
+        $synchronizer = new Synchronizer( [
+            'modelClass'      => '\tests\models\Record',
+            'modelScenario'   => 'non_exists_scenario',
+            'absolutePostUrl' => function ( $serviceName, $id ) {
+                return 'testurl';
+            }
+        ] );
+
+        $fakeSyncService = new SyncService( [
+            'serviceClass' => '\tests\models\TestOAuth2',
+            'returnUrl'    => 'http://my_own_site/returnUrl'
+        ] );
+
+        $mockSyncService = Mockery::mock( $fakeSyncService );
+        $mockSyncService->shouldReceive( 'isConnected' )
+                        ->andReturnUsing( function () {
+                            return true;
+                        } );
+
+        $mockSyncService->shouldReceive( 'isExistsSyncModelByActiveRecord' )
+                        ->andReturnUsing( function ( $service, $model ) {
+                            return false;
+                        } );
+
+        $mockSyncService->shouldReceive( 'publishPost' )
+                        ->andReturnUsing( function () {
+                            return [
+                                'service_id_author' => 1123,
+                                'service_id_post'   => 1,
+                                'time_created'      => time()
+                            ];
+                        } );
+
+        $synchronizer->setService( $serviceName, $mockSyncService );
+
+        $flag = $synchronizer->syncActiveRecord( $serviceName, $model );
+        $this->assertTrue( $flag );
+
+        $flag = $synchronizer->deleteSyncModel( $serviceName, $model );
+        $this->assertTrue( $flag );
+    }
+
+
+    public function testNotSyncActiveRecord() {
+
+        $model          = new Record();
+        $model->content = null;
+
+        $serviceName  = 'fakeService';
+        $synchronizer = new Synchronizer( [
+            'modelClass'      => '\tests\models\Record',
+            'modelScenario'   => 'non_exists_scenario',
+            'absolutePostUrl' => function ( $serviceName, $id ) {
+                return 'testurl';
+            }
+        ] );
+
+        $fakeSyncService = new SyncService( [
+            'serviceClass' => '\tests\models\TestOAuth2',
+            'returnUrl'    => 'http://my_own_site/returnUrl'
+        ] );
+
+        $mockSyncService = Mockery::mock( $fakeSyncService );
+        $mockSyncService->shouldReceive( 'isConnected' )
+                        ->andReturnUsing( function () {
+                            return false;
+                        } );
+
+        $synchronizer->setService( $serviceName, $mockSyncService );
+        $flag = $synchronizer->syncActiveRecord( $serviceName, $model );
+
+        $this->assertTrue( ! $flag );
+    }
+
+
+    public function testSyncCreateSyncModelException() {
+
+        $model          = new Record();
+        $model->content = 'test';
+        $model->save();
+
+        $serviceName  = 'fakeService';
+        $synchronizer = new Synchronizer( [
+            'modelClass'      => '\tests\models\Record',
+            'modelScenario'   => 'non_exists_scenario',
+            'absolutePostUrl' => function ( $serviceName, $id ) {
+                return 'testurl';
+            }
+        ] );
+
+        $fakeSyncService = new SyncService( [
+            'serviceClass' => '\tests\models\TestOAuth2',
+            'returnUrl'    => 'http://my_own_site/returnUrl'
+        ] );
+
+        $mockSyncService = Mockery::mock( $fakeSyncService );
+        $mockSyncService->shouldReceive( 'isConnected' )
+                        ->andReturnUsing( function () {
+                            return true;
+                        } );
+
+        $mockSyncService->shouldReceive( 'isExistsSyncModelByActiveRecord' )
+                        ->andReturnUsing( function ( $service, $model ) {
+                            return false;
+                        } );
+
+        $mockSyncService->shouldReceive( 'publishPost' )
+                        ->andReturnUsing( function ( $message, $url ) {
+                            return [
+                                'service_id_post'   => 123,
+                                'service_id_author' => 123,
+                                'time_created'      => 'bad_format_data'
+                            ];
+                        } );
+
+        $synchronizer->setService( $serviceName, $mockSyncService );
+
+        $this->setExpectedException( 'yii\base\Exception', Yii::t( 'SyncSocial', 'Wrong sync model configuration for SyncSocial extension' ) );
+
+        $synchronizer->syncActiveRecord( $serviceName, $model );
+
+        $this->assertTrue( true );
+    }
+
 
 }

@@ -12,8 +12,7 @@ use tests\models\Record;
 
 /**
  * Class SynchronizerTest
- *
- * @package tests\functional\components
+ * @package tests\functional\behaviors
  */
 class SynchronizerTest extends TestCase {
 
