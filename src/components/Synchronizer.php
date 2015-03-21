@@ -250,6 +250,16 @@ class Synchronizer extends Component {
     }
 
     /**
+     * @param array $data
+     *
+     * @return bool
+     */
+    protected function checkPostData( $data = array ()){
+        return !empty($data['service_id_author'])
+            && !empty($data['service_id_post']);
+    }
+
+    /**
      * @param SyncService $service
      * @param array $data
      *
@@ -323,11 +333,7 @@ class Synchronizer extends Component {
      * @return bool
      * @throws Exception
      */
-    protected function createSyncModel( SyncService $service, ActiveRecord $model, array $data = null ) {
-
-        if ( empty( $data['service_id_post'] ) || empty( $data['service_id_author'] ) ) {
-            return false;
-        }
+    protected function createSyncModel( SyncService $service, ActiveRecord $model, array $data = array() ) {
 
         $syncModel             = new SyncModel();
         $syncModel->attributes = [
@@ -400,7 +406,7 @@ class Synchronizer extends Component {
 
             $flag = true;
             foreach ( $postData as $data ) {
-                if ( ! $this->isExistsSyncModelByData( $service, $data ) ) {
+                if ( $this->checkPostData( $data ) && ! $this->isExistsSyncModelByData( $service, $data ) ) {
                     $model = $this->createModel( $data );
                     if ( $this->createSyncModel( $service, $model, $data ) ) {
                         $count ++;
@@ -439,7 +445,7 @@ class Synchronizer extends Component {
 
             $publishData = $service->publishPost( $message, $url );
 
-            return $this->createSyncModel( $service, $model, $publishData );
+            return $this->checkPostData( $publishData ) && $this->createSyncModel( $service, $model, $publishData );
 
         } else {
             return false;
