@@ -53,6 +53,6 @@ class Record extends ActiveRecord {
      */
     public function getSyncModel()
     {
-        return $this->hasOne('\ufocoder\SyncSocial\models\SyncModel', ['model_id' => 'id_sign']);
+        return $this->hasMany('\ufocoder\SyncSocial\models\SyncModel', ['model_id' => 'id_post']);
     }
 }
