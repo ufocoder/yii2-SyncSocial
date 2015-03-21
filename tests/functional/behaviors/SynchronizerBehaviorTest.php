@@ -96,10 +96,9 @@ class SynchronizerTest extends TestCase {
         $find = Record::findOne($model->getPrimaryKey());
         $this->assertTrue( $model->getPrimaryKey() === $find->getPrimaryKey() );
 
-        $flag = $model->delete();
-        $this->assertTrue( $flag );
-
-
+        $count = $model->delete();
+        $this->assertTrue( $count == 1 );
     }
+
 
 }
