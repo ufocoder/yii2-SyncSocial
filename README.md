@@ -1,7 +1,8 @@
 yii2-SyncSocial
 ===============
 
-[![Latest Stable Version](https://poser.pugx.org/ufocoder/yii2-SyncSocial/v/stable.png)](https://packagist.org/packages/ufocoder/yii2-SyncSocial)
+[![Latest Stable Version](https://poser.pugx.org/ufocoder/yii2-syncsocial/v/stable.svg)](https://packagist.org/packages/ufocoder/yii2-syncsocial)
+[![License](https://poser.pugx.org/ufocoder/yii2-syncsocial/license.svg)](https://packagist.org/packages/ufocoder/yii2-syncsocial)
 [![Travis Status](https://travis-ci.org/ufocoder/yii2-SyncSocial.svg?branch=master)](https://travis-ci.org/ufocoder/yii2-SyncSocial)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/ufocoder/yii2-SyncSocial/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/ufocoder/yii2-SyncSocial/?branch=master)
 [![Code Climate](https://codeclimate.com/github/ufocoder/yii2-SyncSocial/badges/gpa.svg)](https://codeclimate.com/github/ufocoder/yii2-SyncSocial)
